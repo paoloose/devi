@@ -51,7 +51,6 @@ def list_templates():
             deviprint.err(f'Error reading {template_config_path}\n{e}')
             continue
 
-    deviprint()
     if (how_many := len(not_dirs)) > 0:
         deviprint()
         not_dirs_str = DEVI_COLORS['warning'](str(not_dirs))

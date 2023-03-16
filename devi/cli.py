@@ -3,9 +3,9 @@ from pathlib import Path
 from devi.commands.add_template import add_template
 from devi.commands.list import list_templates
 from devi.commands.create import create_project
+from devi.commands.remove import remove_template
 
 import devi.config as config
-from devi.log import deviprint
 
 def main(args: dict):
     """devi: a tool for managing your project templates"""
@@ -29,3 +29,8 @@ def main(args: dict):
             destination,
             project_name
         )
+
+    elif args['rm']:
+        template_name = args['<template-name>']
+        confirm = bool(args['-y'])
+        remove_template(template_name, confirm)
