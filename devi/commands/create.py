@@ -43,10 +43,10 @@ def create_project(
         exit(1)
 
     # Prefer: name in flag -> name in config -> template name
-    name_to_create = project_name or conf_data.get('name') or template_name
+    name_to_create = project_name or conf_data.get('name', template_name)
 
     # Prefer: destination in flag -> destination in config -> error
-    destination_to_create = destination or conf_data.get('destination')
+    destination_to_create = destination or conf_data.get('destination', None)
     if not destination_to_create:
         deviprint.err(
             f"{DEVI_COLORS['primary']('destination')} is defined in {DEVI_COLORS['primary']('template.devi.toml')}, use --dest"
@@ -72,32 +72,20 @@ def create_project(
     copy_dir_content(template_dir, new_project_dir)
     deviprint.success(f"created {DEVI_COLORS['primary'](name_to_create)} at \'{new_project_dir.resolve()}\'")
 
-    oncreate_cmd = conf_data.get('oncreate')
+    oncreate_cmd = conf_data.get('oncreate', None)
     if oncreate_cmd:
-        deviprint()
         deviprint.info(f"running {DEVI_COLORS['secondary']('oncreate')} command:")
-        deviprint(f'$ {oncreate_cmd}\n')
+        deviprint(f'> {oncreate_cmd}')
         # Run the command and pipe the stdout and stderr to this process
         output = subprocess.run(oncreate_cmd,
             shell=True, cwd=new_project_dir,
             stdout=sys.stdout, stderr=sys.stderr
         )
-        deviprint()
         if output.returncode != 0:
             deviprint.err(f"{DEVI_COLORS['secondary']('oncreate')} command failed with code {output.returncode}")
             deviprint.err('project was not created')
             rmtree(new_project_dir)
             exit(output.returncode)
-
-    wanna_change_dir = conf_data.get('change_dir') or False
-    if wanna_change_dir:
-        deviprint.info(f'changing directory to {new_project_dir.absolute()}')
-        if not config.is_windows:
-            cmd = f"cd {destination_to_create}\n"
-            for c in cmd:
-                fcntl.ioctl(sys.stdin, termios.TIOCSTI, c.encode())
-        else:
-            deviprint.warn('warning: `change_dir` is not implemented yet on windows')
 
     # Remove all the *.devi.* files/directories from the created project
     # (see README)
@@ -106,3 +94,14 @@ def create_project(
             rmtree(f)
         else:
             f.unlink()
+
+    wanna_change_dir = conf_data.get('change_dir', False)
+    if wanna_change_dir:
+        if config.is_windows:
+            deviprint.warn('warning: `change_dir` is not implemented yet on Windows')
+            exit(0)
+
+        dir_to_change = new_project_dir.resolve().as_posix()
+        cmd = f"cd {dir_to_change}\n"
+        for c in cmd:
+            fcntl.ioctl(sys.stdin, termios.TIOCSTI, c.encode())
