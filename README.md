@@ -120,21 +120,7 @@ After `oncreate` finishes its execution, all the files and directories with the
 `*.devi.*` extension will be removed from the project. i.e.:
 `whatever.devi.sh`, `my_dir.devi/`, and the `template.devi.toml` itself.
 
-> Note: the `change_dir` is hard to implement since it requires to change the
-> `cwd` of the parent process (the shell). As far as I know, there is
-> [no standard or cross-platform way](https://stackoverflow.com/questions/2375003/how-do-i-set-the-working-directory-of-the-parent-process)
-> to achieve this.
->
-> Here are some workarounds that I think would work:
->
-> - Save the path of the proyect to the clipboard, so the user can paste it.
-> - Make a shell function like `devi-teleport` to evaluate it in the
->   parent process like `devi create my_template && devi-telerport`.
-> - Make a temporary shell script in `$DEVI_HOME` to evaluate in the parent
->   and call. The alias for `devi` will look like this: `devi $@ &&`
->   `source $DEVI_HOME/devi-teleport.sh`.
-> - Update a global variable `$DEVI_TELERPORT` in python, so the alias for
->   `devi` will look like this: `devi $@ && cd $DEVI_TELERPORT`.
+> Note: the `change_dir` only works on *nix for now
 
 ## Development
 

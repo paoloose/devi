@@ -5,6 +5,8 @@ from devi.log import deviprint, DEVI_COLORS
 from devi.toml_parser import tomllib
 from typing import Callable
 
+is_windows = platform.system() == 'Windows'
+
 DEVI_HOME: Path
 DEVI_TEMPLATES: Path
 DEVI_CONFIG: Path
@@ -95,15 +97,14 @@ def get_default_text_editor() -> str:
     for editor in [os.getenv('VIEWER'), os.getenv('EDITOR')]:
         if editor: return editor
 
-    user_os = platform.system()
-    find_cmd = 'where' if user_os == 'Windows' else 'which'
-    null = 'NUL' if user_os == 'Windows' else '/dev/null'
+    find_cmd = 'where' if is_windows else 'which'
+    null = 'NUL' if is_windows else '/dev/null'
 
     for editor in ['sensible-editor', 'editor', 'nano', 'vim']:
         if os.system(f'{find_cmd} {editor} >{null} 2>&1') == 0:
             return editor
 
-    return 'notepad' if user_os == 'Windows' else 'vi'
+    return 'notepad' if is_windows else 'vi'
 
 def get_default_devi_home() -> Path:
     """Defaults to ~/.devi in *nix and %USERPROFILE%\\.devi in Windows."""

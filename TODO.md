@@ -36,3 +36,26 @@ Or define them after the command:
 ```sh
 devi create C++ [--name <test> | --type <library> | --repo <url>]
 ```
+
+## Improve implementation of `change_dir`
+
+`change_dir` functionality is tricky to implement since it requires to change the
+`cwd` of the parent process (the shell). As far as I know, there is
+[no standard or cross-platform way](https://stackoverflow.com/questions/2375003/how-do-i-set-the-working-directory-of-the-parent-process)
+to achieve this.
+
+Here are some workarounds that I think would work:
+
+- Save the path of the proyect to the clipboard, so the user can paste it.
+- Make a shell function like `devi-teleport` to evaluate it in the
+  parent process like `devi create my_template && devi-teleport`.
+- Make a temporary shell script in `$DEVI_HOME` to evaluate in the parent
+  and call. The alias for `devi` will look like this: `devi $@ &&`
+  `source $DEVI_HOME/devi-teleport.sh`.
+
+Update: see `devi/commands/create.py` for the current implementation. It uses
+the [ioctl](https://docs.python.org/3/library/fcntl.html#fcntl.ioctl) system
+call to inject input to the parent process (as if the user had manually typed
+`cd /my/destination`)
+
+Reference: https://unix.stackexchange.com/a/217390/565072

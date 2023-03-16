@@ -5,11 +5,13 @@ from shutil import rmtree
 from typing import Optional
 
 from devi.utils import (
-    DeviError, copy_dir_content, read_config_file, DeviErrorInvalidConfigFile
+    copy_dir_content, read_config_file, DeviErrorInvalidConfigFile
 )
-from devi.toml_parser import tomllib
 from devi.log import deviprint, DEVI_COLORS
 import devi.config as config
+
+if not config.is_windows:
+    import fcntl, termios
 
 def create_project(
     template_name: str,
@@ -90,7 +92,12 @@ def create_project(
     wanna_change_dir = conf_data.get('change_dir') or False
     if wanna_change_dir:
         deviprint.info(f'changing directory to {new_project_dir.absolute()}')
-        deviprint.warn('warning: `change_dir` is not implemented yet')
+        if not config.is_windows:
+            cmd = f"cd {destination_to_create}\n"
+            for c in cmd:
+                fcntl.ioctl(sys.stdin, termios.TIOCSTI, c.encode())
+        else:
+            deviprint.warn('warning: `change_dir` is not implemented yet on windows')
 
     # Remove all the *.devi.* files/directories from the created project
     # (see README)
