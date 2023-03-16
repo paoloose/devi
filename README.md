@@ -3,16 +3,22 @@
 </p>
 
 <p align="center">
-    <samp>devi is a cli tool for managing your project templates</samp>
+  <samp>devi is a cli tool for managing your project templates</samp>
 </p>
 
 With `devi` you can create, use, reuse and manage your project templates.
 
 ## Usage
 
+<div align="justify">
+<div align="center">
+
 ```bash
 devi <command> [options]
 ```
+
+</div>
+</div>
 
 Available commands:
 
@@ -26,7 +32,7 @@ Windows.
 
 The directory structure of `$DEVI_HOME` is as follows:
 
-```bash
+```ocaml
 $DEVI_HOME
 ├── config.toml # see Configuration files
 └── templates
