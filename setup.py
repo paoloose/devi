@@ -8,7 +8,7 @@ if sys.version_info < (3, 7):
     errstr = 'devi only supports python version 3.7+. Please Upgrade.\n'
     sys.exit(1)
 
-requirements = []
+requirements = ['docopt']
 
 if sys.version_info < (3, 11):
     requirements.append('tomli')
