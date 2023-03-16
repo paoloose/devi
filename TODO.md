@@ -1,4 +1,3 @@
-
 # TODO ideas
 
 - `devi add <template_name> <dir> [--edit]`
