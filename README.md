@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-    <code>devi is a cli tool for managing your project templates</code>
+    <samp>devi is a cli tool for managing your project templates</samp>
 </p>
 
 With `devi` you can create, use, reuse and manage your project templates.
@@ -140,7 +140,3 @@ pip install -e .
 # For working on it
 alias devi="python3 -m devi"
 ```
-
-## License
-
-
