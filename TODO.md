@@ -59,3 +59,12 @@ call to inject input to the parent process (as if the user had manually typed
 `cd /my/destination`)
 
 Reference: https://unix.stackexchange.com/a/217390/565072
+
+## Change the devi templates directory behaviour
+
+`devi` stores all its templates in `$DEVI_HOME/templates`, and its by default
+set to `~/.devi/templates`. You can override the .devi location, but you can't
+define a custom path to store your templates.
+
+Providing a way to define a custom path may help to migrate existing templates
+directories or to make templates more accesible to the user.

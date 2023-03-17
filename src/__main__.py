@@ -5,7 +5,7 @@ __doc__ = f"""{devi_bin}: a tool for managing your project templates
 
 usage:
     {devi_bin} add <path> [<template-name>]
-    {devi_bin} create <template-name> [<destination>] [--name=<project-name>] [--dest=<destination>]
+    {devi_bin} create <template-name> [<destination>] [--name=<project-name>]
     {devi_bin} create <template-name> as <project-name> in <destination>
     {devi_bin} list
     {devi_bin} rm     <template-name> [-y]

@@ -6,6 +6,12 @@
   <samp>devi is a cli tool for managing your project templates</samp>
 </p>
 
+<p align="center">
+<img src="https://img.shields.io/badge/pip%20install-devi--cli-blue"/>
+<img src="https://shields.io/pypi/v/devi-cli"/>
+<img src="https://shields.io/pypi/l/devi-cli"/>
+</p>
+
 With `devi` you can create, use, reuse and manage your project templates.
 
 ## Usage
@@ -22,41 +28,32 @@ devi <command> [options]
 
 Available commands:
 
-- `add` - Create a new template
+- `add` - Add a new template to your list
 - `create` - Create a new project from a template
 - `list` - List available templates
+- `rm` - remove a template
 
-`$DEVI_HOME` is the special directory where `devi` stores its configuration
-files and templates. By default is set to `~/.devi` or `%USERPROFILE%\.devi` on
-Windows.
-
-The directory structure of `$DEVI_HOME` is as follows:
-
-```ocaml
-$DEVI_HOME
-├── config.toml # see Configuration files
-└── templates
-    ├── my_template1 # see Template structure
-    │   ├── template.devi.toml
-    │   ├── file1
-    │   └── file2
-    └── ...
-```
+`$DEVI_HOME` is the special directory where `devi` stores your templates and
+configuration. By default is set to `~/.devi` or `%USERPROFILE%\.devi` on
+Windows (see [devi's home](#devis-home)).
 
 ---
 
-## Commands
+## Usage
+
+<!-- here might be a showcase video -->
 
 ### Add a new template
 
-The `add` command creates a new template to `$DEVI_HOME/templates`.
+The `add` command adds a new template to `$DEVI_HOME/templates`.
 
 ```bash
 devi add <path> [<template_name>]
-# Both are required, since infering them is somewhat ambiguous
+```
+```bash
+devi add . my_new_template
 
-devi add . my_template
-
+# if template_name is not provided, devi will use the directory name
 devi add ~/dev/my_template
 ```
 
@@ -64,35 +61,72 @@ devi add ~/dev/my_template
 
 The `create` command creates a new project from an existing template.
 
-Aliases: `new`, `n`, `init`, `i`
+<!-- Aliases: `new`, `n`-->
 
 ```bash
-devi create <template_name> [<destination>] [--name=<project-name>] [--dest=<destination>]
+devi create <template_name> [<destination>] [--name=<project-name>]
 
-# Syntactic sugar:
+# or with syntactic sugar:
 devi create <template_name> as <project_name> in <destination>
 ```
+```bash
+# this will create a new dir called "my_template"
+devi create my_template .
+# don't worry, you can give it a name
+devi create my_template . --name=my_project
+# equivalent to the following:
+devi create my_template as my_project in .
+```
 
-If parameters `project_name` or `destination` are not set, `devi` will use
-the values defined in the `template.devi.toml`
+Do you want more customization? we catch you!
+
+Both parameters (`project_name` and `destination`) are optional. If not set,
+`devi` will use the values defined in the `template.devi.toml` (see
 [template config](#template-configuration-file)).
 
-To see the list of available templates, run `devi list`.
+## Viewing and removing your templates
 
-## Template structure
+To see the list of available templates, run `devi list`. They are located on
+`$DEVI_HOME/templates`.
+
+Don't want a template anymore? Remove it with
 
 ```bash
-$DEVI_HOME/templates
-├── my_template
-│   ├── template.devi.toml
-│   ├── files
-│   ├── dirs/
-│   └── ...
+devi rm <template-name> [-y]
 ```
+
+It will ask you to confirm the deletion, you can skip this with the `-y` flag.
+
+## Devi's home
+
+`$DEVI_HOME` is special, the place where `devi` store its templates and
+configuration.
+
+By default is set to `~/.devi/templates`, but you can override it, e.g, for
+bash:
+
+```bash
+echo "export DEVI_HOME=~/my/custom/devi" >> ~/.bashrc
+```
+
+The directory structure of `$DEVI_HOME` is as follows:
+
+```ocaml
+$DEVI_HOME
+├── config.toml # see Configuration files
+└── templates
+    ├── my_template # see Template structure
+    │   ├── template.devi.toml
+    │   ├── file1
+    │   └── file2
+    └── ...
+```
+
+`TODO:` configuration file for devi is not ready yet
 
 ### Template configuration file
 
-The `template.devi.toml` file is used to configure the template. This file is
+The `template.devi.toml` file is used to customize the template. This file is
 **optional**, and has the following structure:
 
 ```toml
@@ -101,7 +135,7 @@ name = ''
 description = ''
 destination = '.'
 oncreate = ''
-change_dir = true # (not implemented yet)
+change_dir = true
 ```
 
 - `name` - The name of the project. If not set, `devi` will use the name of the
@@ -117,10 +151,22 @@ project directory after the project has been created.
 All the properties are optional.
 
 After `oncreate` finishes its execution, all the files and directories with the
-`*.devi.*` extension will be removed from the project. i.e.:
+`*.devi.*` extension will be removed from the project. e.g.:
 `whatever.devi.sh`, `my_dir.devi/`, and the `template.devi.toml` itself.
 
-> Note: the `change_dir` only works on *nix for now
+> **Note**
+> Currently `change_dir` is not implemented for Windows (see [TODO.md](./TODO.md))
+
+## Installation
+
+```bash
+pip install devi-cli
+```
+> **Note**
+> Getting `error: externally-managed-environment` on Debian or other linux
+> distros?
+>
+> See [this](https://github.com/python/cpython/issues/102134#issuecomment-1445428402).
 
 ## Development
 

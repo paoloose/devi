@@ -23,7 +23,7 @@ def main(args: dict):
     elif args['create']:
         template_name = args['<template-name>']
         project_name = args['--name'] or args['<project-name>']
-        destination = args['--dest'] or args['<destination>']
+        destination = args['<destination>']
         create_project(
             template_name,
             destination,
