@@ -1,9 +1,8 @@
 <p align="center">
     <h1 align="center">devi</h1>
 </p>
-
 <p align="center">
-  <samp>devi is a cli tool for managing your project templates</samp>
+  <code>devi is a cli tool for managing your project templates</code>
 </p>
 
 <p align="center">
