@@ -38,7 +38,7 @@ Windows (see [devi's home](#devis-home)).
 
 ---
 
-## Usage
+## Commands
 
 <!-- here might be a showcase video -->
 
