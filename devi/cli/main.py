@@ -5,12 +5,9 @@ from devi.commands.list import list_templates
 from devi.commands.create import create_project
 from devi.commands.remove import remove_template
 
-import devi.config as config
-
-def main(args: dict):
+def main():
     """devi: a tool for managing your project templates"""
-    config.init()
-    # print(args)
+    from devi.cli.args_parser import args
 
     if args['add']:
         src_path: Path = Path(args['<path>'])

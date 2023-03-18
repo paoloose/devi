@@ -7,7 +7,7 @@ from typing import Optional
 from devi.utils import (
     copy_dir_content, read_config_file, DeviErrorInvalidConfigFile
 )
-from devi.log import deviprint, DEVI_COLORS
+from devi.cli.log import deviprint, DEVI_COLORS
 import devi.config as config
 
 if not config.is_windows:

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from devi.toml_parser import tomllib
-from devi.log import deviprint, ANSIcodes, DEVI_COLORS
+from devi.cli.log import deviprint, ANSIcodes, DEVI_COLORS
 import devi.config as config
 
 def list_templates():

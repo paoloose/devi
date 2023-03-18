@@ -1,7 +1,7 @@
 import os
 import platform
 from pathlib import Path
-from devi.log import deviprint, DEVI_COLORS
+from devi.cli.log import deviprint, DEVI_COLORS
 from devi.toml_parser import tomllib
 from typing import Callable
 

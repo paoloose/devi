@@ -4,7 +4,7 @@ import subprocess
 import tempfile
 
 import devi.config as config
-from devi.log import deviprint
+from devi.cli.log import deviprint
 from devi.toml_parser import tomllib
 
 class DeviError(Exception):

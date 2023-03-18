@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools==62.1.0", "wheel"]
+requires = ["setuptools==64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "devi-cli"
-version = "0.1.4"
+version = "0.1.8"
 authors = [
   { name="Paolo Flores", email="paolo.flores2@unmsm.edu.pe" }
 ]
@@ -23,7 +23,13 @@ dependencies = [
     'tomli; python_version < "3.11"',
 ]
 
+[project.scripts]
+devi = "devi.cli.main:main"
+
 [project.urls]
-homepage = "https://github.com/paoloose/devi"
 repository = "https://github.com/paoloose/devi"
 issues = "https://github.com/paoloose/devi/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["devi", "devi.commands", "devi.cli"]

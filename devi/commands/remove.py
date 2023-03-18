@@ -1,7 +1,7 @@
 from pathlib import Path
 from shutil import rmtree
 
-from devi.log import deviprint, DEVI_COLORS
+from devi.cli.log import deviprint, DEVI_COLORS
 from devi.utils import ask_user_input
 import devi.config as config
 

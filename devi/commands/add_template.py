@@ -13,7 +13,7 @@ from devi.utils import (
     DeviErrorInvalidConfigFile
 )
 import devi.config as config
-from devi.log import deviprint, DEVI_COLORS
+from devi.cli.log import deviprint, DEVI_COLORS
 
 # TODO: convert this to interactive input instead of file editing
 # reasons:
