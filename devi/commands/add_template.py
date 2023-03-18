@@ -8,6 +8,7 @@ from subprocess import CalledProcessError
 from devi.utils import (
     copy_dir_content,
     read_config_file,
+    ask_user_input,
     edit_file,
     DeviErrorEditorNotFound,
     DeviErrorInvalidConfigFile
@@ -37,6 +38,8 @@ def add_template(src_path: Path, template_name: Optional[str]):
         )
         exit(1)
 
+    template_name = ask_user_input(f'template name', default=template_name)
+
     template_path = Path(config.DEVI_TEMPLATES, template_name)
 
     # We need to handle the case where the template already exists
@@ -65,12 +68,9 @@ def add_template(src_path: Path, template_name: Optional[str]):
     except DeviErrorEditorNotFound as e:
         deviprint.warn(f"couldn't find editor: '{editor}', do you defined it properly?")
 
-    # Finally, read and parse the config file
-    # It is not necesary a "new name", can be the directory same
-    new_name = ""
+    # try to parse the newly created configfile
     try:
-        conf_data = read_config_file(template_config_path)
-        new_name = conf_data['name']
+        read_config_file(template_config_path)
     except DeviErrorInvalidConfigFile as e:
         deviprint.err('failed to parse your config file:')
         deviprint(e)
@@ -80,18 +80,6 @@ def add_template(src_path: Path, template_name: Optional[str]):
         e.add_note('This may happened because the config file that previously existed was deleted')
         exit_cleanup(template_path, only_cleanup=True)
         raise
-
-    # New template name, if modified by the user
-    if new_name != template_name:
-        if isinstance(new_name, str):
-            try:
-                template_path.rename(template_path.parent / new_name)
-                template_name = new_name
-            except Exception as e:
-                deviprint.err(f'error when renaming the template name: {e}')
-        else:
-            deviprint.err('template name must be an string')
-            exit_cleanup()
 
     deviprint.info(f"new template {DEVI_COLORS['primary'](template_name)} created succesfully")
 

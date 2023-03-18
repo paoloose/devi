@@ -79,7 +79,7 @@ devi create my_template as my_project in .
 
 Do you want more customization? we catch you!
 
-Both parameters (`project_name` and `destination`) are optional. If not set,
+Both parameters (`project-name` and `destination`) are optional. If not set,
 `devi` will use the values defined in the `template.devi.toml` (see
 [template config](#template-configuration-file)).
 
@@ -125,29 +125,27 @@ $DEVI_HOME
 
 ### Template configuration file
 
-The `template.devi.toml` file is used to customize the template. This file is
-**optional**, and has the following structure:
+The `template.devi.toml` file is used to customize the template. It is
+**autocreated** by `devi`. Here is an example of a template for web projects:
 
 ```toml
-# Default values
-name = ''
-description = ''
-destination = '.'
-oncreate = ''
+description = 'my template for web projects'
+default_name = 'new-project'
+destination = '~/projects/web'
+oncreate = 'npm init -y && npm install vite && npm run dev'
 change_dir = true
 ```
 
-- `name` - The name of the project. If not set, `devi` will use the name of the
-directory where the template is located.
-- `description` - A short description of the template used by `devi list`.
-- `destination` - The destination directory where the project will be created
-in.
-- `oncreate` - A shell command that will be executed after the project has been
-created. Relative paths are relative to the project directory.
-- `change_dir` - If `true`, `devi` will change the current directory to the
-project directory after the project has been created.
-
-All the properties are optional.
+- `description` - it will be shown on `devi list` (default: `None`).
+- `default_name` - devi will use this name as default for `devi create`
+  (default: the template's name).
+- `destination` - the destination directory where the project will be created in
+  (default: `"."`).
+- `oncreate` - a shell command that will be executed after the project has been
+  created. Commands will be relative to the newly created template
+  (default: `None`).
+- `change_dir` - wheter you want to change your directory to the newly created
+  template or not (default: `true`)
 
 After `oncreate` finishes its execution, all the files and directories with the
 `*.devi.*` extension will be removed from the project. e.g.:

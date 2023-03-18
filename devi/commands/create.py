@@ -29,21 +29,21 @@ def create_project(
 
     # Read the template.devi.toml file
     conf_data: dict = {}
-    devi_conf_file = template_dir / config.DEVI_TEMPLATE_TOML_FILENAME
+    template_conf_file = template_dir / config.DEVI_TEMPLATE_TOML_FILENAME
     try:
-        conf_data = read_config_file(devi_conf_file)
+        conf_data = read_config_file(template_conf_file)
     except FileNotFoundError as e:
         pass
     except IOError as e:
-        deviprint.err(f'error reading {devi_conf_file}:\n{e}')
+        deviprint.err(f'error reading {template_conf_file}:\n{e}')
         exit(1)
     except DeviErrorInvalidConfigFile as e:
-        deviprint.err(f'Cannot parse your {devi_conf_file}: \n{e}')
+        deviprint.err(f"couldn't parse your {template_conf_file}: \n{e}")
         deviprint.err('aborting')
         exit(1)
 
     # Prefer: name in flag -> name in config -> template name
-    name_to_create = project_name or conf_data.get('name', template_name)
+    name_to_create = project_name or conf_data.get('default_name', template_name)
 
     # Prefer: destination in flag -> destination in config -> error
     destination_to_create = destination or conf_data.get('destination', None)

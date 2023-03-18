@@ -70,13 +70,16 @@ def init():
 
     DEVI_TEMPLATE_TOML_FILENAME = 'template.devi.toml'
     # Will use this if "DEVI_HOME / DEVI_TEMPLATE_TOML_FILENAME" config file is not defined
-    DEVI_TEMPLATE_TOML_CONTENT = lambda template_name: f"""# edit this if you want to change the template name
-name = '{template_name}'
+    DEVI_TEMPLATE_TOML_CONTENT = lambda template_name: (
+f"""# configuration for template '{template_name}'
 
-# this description will be shown on `devi list`
+# this description will be shown on 'devi list'
 description = ''
 
-# destination to be used when you create this template with `devi create`
+# this name will be used as default name for 'devi create "{template_name}"'
+default_name = '{template_name}'
+
+# destination to be used when for 'devi create "{template_name}"'
 # (can be relative or absolute)
 destination = '.'
 
@@ -85,7 +88,7 @@ oncreate = ''
 
 # wheter you want to 'cd' to the newly created template or not
 change_dir = true
-"""
+""")
 
 def get_default_text_editor() -> str:
     """Try to get the default text editor from the environment variables.
