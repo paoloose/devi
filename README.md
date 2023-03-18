@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-<img src="https://img.shields.io/badge/pip%20install-devi--cli-blue"/>
+<img src="https://img.shields.io/badge/pipx%20install-devi--cli-blue"/>
 <img src="https://shields.io/pypi/v/devi-cli"/>
 <img src="https://shields.io/pypi/l/devi-cli"/>
 </p>
@@ -158,14 +158,23 @@ After `oncreate` finishes its execution, all the files and directories with the
 
 ## Installation
 
+`devi` is distributed as a [pypi package](https://pypi.org/project/devi-cli/)
+which exposes the `devi` binary.
+
 ```bash
 pip install devi-cli
 ```
-> **Note**
-> Getting `error: externally-managed-environment` on Debian or other linux
-> distros?
->
-> See [this](https://github.com/python/cpython/issues/102134#issuecomment-1445428402).
+
+However, since `devi` is just a cli tool, is preferable to install it using
+`pipx`, which will create a separate python environment that won't interfere
+with your system's one.
+
+```bash
+pipx install devi-cli
+```
+
+If you don't have `pipx` already, go [here](https://pypa.github.io/pipx/), it's
+very handy! This will also avoid possible [environment errors](https://github.com/python/cpython/issues/102134) on most linux distributions.
 
 ## Development
 
@@ -174,6 +183,6 @@ Requires python `>= 3.7`.
 ```bash
 # In the root project, install an editable version of devi
 pip install -e .
-# For working on it
-alias devi="python3 -m devi"
+# Or just invoque the __main__
+alias devi="python3 devi"
 ```
