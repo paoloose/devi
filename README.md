@@ -67,8 +67,9 @@ The `create` command creates a new project from an existing template.
 devi create <template_name> [<destination>] [--name=<project-name>]
 
 # or with syntactic sugar:
-devi create <template_name> as <project_name> in <destination>
+devi create <template_name> as <project_name> [in <destination>]
 ```
+
 ```bash
 # this will create a new dir called "my_template"
 devi create my_template .
