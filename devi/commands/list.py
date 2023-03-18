@@ -5,7 +5,7 @@ from devi.cli.log import deviprint, ANSIcodes, DEVI_COLORS
 import devi.config as config
 
 def list_templates():
-    """List all the available templates in $DEVI_HOME/templates.
+    """List all the available templates in $DEVI_TEMPLATES
 
     It will show the 'description' field in the template.devi.toml file
     if defined. If the 'name' field is not defined, will use the dir name.

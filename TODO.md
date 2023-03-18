@@ -49,8 +49,8 @@ Here are some workarounds that I think would work:
 - Save the path of the proyect to the clipboard, so the user can paste it.
 - Make a shell function like `devi-teleport` to evaluate it in the
   parent process like `devi create my_template && devi-teleport`.
-- Make a temporary shell script in `$DEVI_HOME` to evaluate in the parent
-  and call. The alias for `devi` will look like this: `devi $@ &&`
+- Make a temporary shell script in somewhere to evaluate in the parent.
+  An alias for `devi` will look like this: `devi $@ &&`
   `source $DEVI_HOME/devi-teleport.sh`.
 
 Update: see `devi/commands/create.py` for the current implementation. It uses
@@ -59,12 +59,3 @@ call to inject input to the parent process (as if the user had manually typed
 `cd /my/destination`)
 
 Reference: https://unix.stackexchange.com/a/217390/565072
-
-## Change the devi templates directory behaviour
-
-`devi` stores all its templates in `$DEVI_HOME/templates`, and its by default
-set to `~/.devi/templates`. You can override the .devi location, but you can't
-define a custom path to store your templates.
-
-Providing a way to define a custom path may help to migrate existing templates
-directories or to make templates more accesible to the user.

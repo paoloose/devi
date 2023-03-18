@@ -7,7 +7,6 @@ from typing import Callable
 
 is_windows = platform.system() == 'Windows'
 
-DEVI_HOME: Path
 DEVI_TEMPLATES: Path
 DEVI_CONFIG: Path
 DEVI_TEMPLATE_TOML_CONTENT: Callable[[str], str]
@@ -18,7 +17,6 @@ def init():
     """
     Initialize the config variables for devi.
     """
-    global DEVI_HOME
     global DEVI_TEMPLATES
     global DEVI_CONFIG
 
@@ -28,35 +26,30 @@ def init():
 
     global DEVI_COLORS # defined in log.py
 
-    # Default home is ~/.devi
-    if (devi_home := os.getenv('DEVI_HOME')) and isinstance(devi_home, str):
-        DEVI_HOME = Path(devi_home).expanduser()
+    is_custom_user_dir = False
+    if (devi_templates_dir := os.getenv('DEVI_TEMPLATES')):
+        DEVI_TEMPLATES = Path(devi_templates_dir)
+        is_custom_user_dir = True
     else:
-        DEVI_HOME = get_default_devi_home()
-
-    first_time_using_devi = False
-
-    if not DEVI_HOME.exists():
-        first_time_using_devi = True
+        DEVI_TEMPLATES = Path.home() / '.templates'
 
     try:
         # exists ok
-        create_devi_home_tree(DEVI_HOME)
-        if first_time_using_devi:
-            deviprint(DEVI_COLORS)
-            deviprint.info(
-                f'we created a \'.devi\' dir in \'{DEVI_HOME.resolve().as_posix()}\' just for you!'
+        if not DEVI_TEMPLATES.exists():
+            DEVI_TEMPLATES.mkdir()
+            deviprint.success(
+                f'we just setup \'{DEVI_TEMPLATES.resolve().as_posix()}\' just for you!'
             )
-            deviprint.info(f"if you want to override it, define {DEVI_COLORS['info']('$DEVI_HOME')}\n")
+            if not is_custom_user_dir:
+                deviprint.info(f"if you want to override it, define {DEVI_COLORS['info']('$DEVI_TEMPLATES')}\n")
     except Exception as e:
-        deviprint.err(f'couldn\'t create $DEVI_HOME at \'{DEVI_HOME}\'. exiting')
+        deviprint.err(f'couldn\'t create $DEVI_TEMPLATES at \'{DEVI_TEMPLATES}\'. exiting')
         deviprint.err(f'error received: {e}')
         exit(1)
 
-    # Templates are stored in ~/.devi/templates
-    DEVI_TEMPLATES = Path(DEVI_HOME, 'templates')
-    # Config file for devi is ~/.devi/config.toml
-    DEVI_CONFIG = Path(DEVI_HOME, 'config.toml')
+    # Config file for devi is ~/.devi.toml
+    # (TODO: put this in a better cross-platform place)
+    DEVI_CONFIG = Path.home() / '.devi.toml'
 
     try:
         with open(DEVI_CONFIG, 'rb') as f:
@@ -69,7 +62,7 @@ def init():
         pass
 
     DEVI_TEMPLATE_TOML_FILENAME = 'template.devi.toml'
-    # Will use this if "DEVI_HOME / DEVI_TEMPLATE_TOML_FILENAME" config file is not defined
+    # TODO: make this a customizable file
     DEVI_TEMPLATE_TOML_CONTENT = lambda template_name: (
 f"""# configuration for template '{template_name}'
 
@@ -108,12 +101,3 @@ def get_default_text_editor() -> str:
             return editor
 
     return 'notepad' if is_windows else 'vi'
-
-def get_default_devi_home() -> Path:
-    """Defaults to ~/.devi in *nix and %USERPROFILE%\\.devi in Windows."""
-    return Path.home() / '.devi'
-
-def create_devi_home_tree(devi_home: Path):
-    """Creates the default devi's tree structure."""
-    devi_home.mkdir(parents=True, exist_ok=True)
-    (devi_home / 'templates').mkdir(parents=True, exist_ok=True)

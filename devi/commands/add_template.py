@@ -47,7 +47,7 @@ def add_template(src_path: Path, template_name: Optional[str]):
         deviprint.err(f"template '{template_name}' already exists")
         exit(1)
 
-    # Copy all the files to $DEVI_HOME / templates
+    # Copy to $DEVI_TEMPLATES
     copy_dir_to_template(src_path, template_name)
 
     template_config_path = Path(config.DEVI_TEMPLATES, template_name, config.DEVI_TEMPLATE_TOML_FILENAME)
@@ -93,6 +93,7 @@ def copy_dir_to_template(src_path: Path, template_name: str):
         deviprint.err(f"error copying recusively to '{template_path}': {e}")
         exit_cleanup(template_path)
 
+# TODO: update this information, because currently there is no "devi config file"
 def dump_default_template_config(template_file: Path, template_name: str):
     """Dumps a default config file for your new templates.
 

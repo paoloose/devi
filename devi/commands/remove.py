@@ -6,7 +6,7 @@ from devi.utils import ask_user_input
 import devi.config as config
 
 def remove_template(template_name: str, confirm: bool):
-    """Remove a template listed on $DEVI_HOME/templates by its name
+    """Remove a template listed on $DEVI_TEMPLATES by its name
     """
     name_color = DEVI_COLORS['primary']
 

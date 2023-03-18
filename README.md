@@ -32,9 +32,9 @@ Available commands:
 - `list` - List available templates
 - `rm` - remove a template
 
-`$DEVI_HOME` is the special directory where `devi` stores your templates and
-configuration. By default is set to `~/.devi` or `%USERPROFILE%\.devi` on
-Windows (see [devi's home](#devis-home)).
+`$DEVI_TEMPLATES` is the special directory where `devi` stores your templates.
+By default is set to `~/.templates`, but it is customizable to easy migrate
+your existing templates!
 
 ---
 
@@ -44,11 +44,12 @@ Windows (see [devi's home](#devis-home)).
 
 ### Add a new template
 
-The `add` command adds a new template to `$DEVI_HOME/templates`.
+The `add` command adds a new template to `$DEVI_TEMPLATES`.
 
 ```bash
 devi add <path> [<template_name>]
 ```
+
 ```bash
 devi add . my_new_template
 
@@ -86,7 +87,7 @@ Both parameters (`project-name` and `destination`) are optional. If not set,
 ## Viewing and removing your templates
 
 To see the list of available templates, run `devi list`. They are located on
-`$DEVI_HOME/templates`.
+`$DEVI_TEMPLATES`.
 
 Don't want a template anymore? Remove it with
 
@@ -96,29 +97,17 @@ devi rm <template-name> [-y]
 
 It will ask you to confirm the deletion, you can skip this with the `-y` flag.
 
-## Devi's home
+## Devi's templates
 
-`$DEVI_HOME` is special, the place where `devi` store its templates and
-configuration.
+`$DEVI_TEMPLATES` is special, the place where `devi` finds and stores all your
+templates. By default is set to `~/.templates` or
+`%USERPROFILE%\templates` on Windows.
 
-By default is set to `~/.devi/templates`, but you can override it, e.g, for
-bash:
+If you already have a templates folder or you want to make your templates more
+accesible, you can override it, e.g, for bash:
 
 ```bash
-echo "export DEVI_HOME=~/my/custom/devi" >> ~/.bashrc
-```
-
-The directory structure of `$DEVI_HOME` is as follows:
-
-```ocaml
-$DEVI_HOME
-├── config.toml # see Configuration files
-└── templates
-    ├── my_template # see Template structure
-    │   ├── template.devi.toml
-    │   ├── file1
-    │   └── file2
-    └── ...
+echo "export DEVI_TEMPLATES=~/my/templates" >> ~/.bashrc
 ```
 
 `TODO:` configuration file for devi is not ready yet
