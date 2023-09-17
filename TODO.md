@@ -9,11 +9,11 @@
   destination directory is the current directory.
 
 - In the name property, put variables to replace, like:
-  - `{{name}}` (for the name of the template)
-  - `{{date}}` (for the current date in the format `YYYY-MM-DD`)
-  - `{{time}}` (for the current time in the format `HH:MM:SS`)
-  - `{{pid}}` (for the current process id)
-  - `{{i}}` (for the index of the file)
+  - `{name}` (for the name of the template)
+  - `{date}` (for the current date in the format `YYYY-MM-DD`)
+  - `{time}` (for the current time in the format `HH:MM:SS`)
+  - `{pid}` (for the current process id)
+  - `{i}` (for the index of the file)
 
 ## Interactive variables feature
 
